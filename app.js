@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const expressValidator = require('express-validator');
 
+const mongoURI = "mongodb+srv://madzed23:hasan%40786@nashtapani-y6fpj.mongodb.net/test?retryWrites=true&w=majority"
 
 //import routes
 const authRoutes=require('./routes/auth');
@@ -16,11 +17,18 @@ const categoryRoutes=require('./routes/category');
 const app = express();
 //mongo connect
 console.log(process.env.DATABASE)
-mongoose.connect(
+/*mongoose.connect(
   process.env.DATABASE, {
   	useNewUrlParser: true,
    	useCreateIndex: true
-  })
+  })*/
+  mongoose.connect(
+    mongoURI,
+    {
+      useNewUrlParser: true,
+      useMongoClient: true
+    }
+    )
 .then(() => console.log('DB Connected'))
  
 mongoose.connection.on('error', err => {

@@ -23,7 +23,7 @@ exports.signup = (req, res) => {
         // Save the verification token
         token.save(function (err) {
             if (err) { return res.status(500).send({ msg: err.message }); }
-            
+            else{
             user.save((err, user) => {
                 if (err) {
                     console.log('error')
@@ -37,7 +37,7 @@ exports.signup = (req, res) => {
                 return res.json({
                     user
                 });}
-            }); 
+            }); }
 
             // Send the email
             /*var transporter = nodemailer.createTransport({ service: 'Sendgrid', auth: { user: process.env.SENDGRID_USERNAME, pass: process.env.SENDGRID_PASSWORD } });
