@@ -27,8 +27,6 @@ export default class Homepage extends Component {
         <Services resumeData={{name:this.state.email,}}/>
         <About resumeData={{name:this.state.email,}}/>
         <Portfolio resumeData={{name:this.state.email,}}/>
-        <Team resumeData={{name:this.state.email,}}/>
-        <Contact resumeData={{name:this.state.email,}}/>
         <Footer resumeData={{name:this.state.email,}}/>
         </div>
         );
