@@ -11,6 +11,9 @@ export default class SignUp extends Component {
       password:'',
       phone:'',
       message:'',
+      otpsent:false,
+      otp:'',
+      sentotp:'',
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,7 +29,32 @@ export default class SignUp extends Component {
     });
   }
   
+  handleOTP = async e => {
+    const rand =  Math.floor(1000 + (Math.random() * (8999)));
+    const mob = this.state.phone;
+    if(mob==''){
+      this.setState({
+        message:"Enter Phone Number First",
+        })
+    }
+    else{
+      console.log("1**")
+    const response = await fetch(`https://2factor.in/API/V1/2af09ebe-830c-11ea-9fa5-0200cd936042/SMS/${mob}/${rand}/nashta`);
+    const body = await response.json();
+      if (response.status !== 200) {this.setState({
+        message:body.message,
+        })}
+      else{console.log("3**")
+      this.setState({
+        otpsent:true,
+        sentotp:rand,
+        message:body.message,
+        })
+  }}
+}
+
     handleSubmit = async e => {
+      if (this.state.otp==this.state.sentotp){
       const token = Cookies.get("to")
       console.log(token)
       e.preventDefault();
@@ -46,7 +74,12 @@ export default class SignUp extends Component {
       this.setState({
         message:body.message,
         })
-      this.props.history.push('/login')}
+      this.props.history.push('/login')}}
+      else{
+        this.setState({
+          message:"OTP mismatch",
+          })
+      }
     };
 
     render() {
@@ -76,6 +109,13 @@ export default class SignUp extends Component {
                       <div className="form-group">
                         <input className="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" name="phone"
                         onChange={this.handleInputChange} data-validation-required-message="Please enter your password." />
+                        <p className="help-block text-danger" />
+                      </div>
+
+                      <div className="form-group">
+                      {this.state.otpsent?
+                        <input className="form-control" id="phone" type="tel" placeholder="OTP *" required="required" name="otp"
+                        onChange={this.handleInputChange} data-validation-required-message="Please enter the otp." />:<button onClick = {this.handleOTP} type="button">Send OTP</button>}
                         <p className="help-block text-danger" />
                       </div>
                       
